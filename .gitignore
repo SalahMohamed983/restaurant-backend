@@ -1,0 +1,67 @@
+# Visual Studio / .NET
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Bb]in/
+[Oo]bj/
+
+# NuGet
+*.nupkg
+packages/
+project.lock.json
+project.fragment.cache
+
+# Rider
+.idea/
+*.iml
+
+# Visual Studio Code
+.vscode/
+
+# ASP.NET Core
+appsettings.*.json
+secrets.json
+
+# Entity Framework Migrations (keep if you want to commit migrations)
+# ResturantDataAccessLayer/Migrations/
+
+# Logs
+*.log
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Dotnet watch temp
+.dotnetwatch
+
+# User-specific files
+*.vspscc
+*.[Pp]kg[Nn]upkg
+
+# Database files
+*.mdf
+*.ldf
+*.sqlite
+
+# Publish output
+publish/
+
+# JetBrains Rider
+.idea/
+
+# Temporary
+tmp/
+
+# Dotnet tools
+.toolstarget
+.nuget
+
+# Generated files
+**/*Generated.cs
+
+# End of file
