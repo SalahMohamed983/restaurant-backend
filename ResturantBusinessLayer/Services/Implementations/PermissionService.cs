@@ -21,38 +21,7 @@ namespace ResturantBusinessLayer.Services.Implementations
             _uow = uow;
         }
 
-        public async Task<int> CreateAsync(PermissionDto dto)
-        {
-            // Check if code already exists
-            if (!string.IsNullOrEmpty(dto.Code) && await ExistsAsync(dto.Code))
-            {
-                throw new InvalidOperationException($"Permission with code '{dto.Code}' already exists.");
-            }
-
-            var entity = _mapper.Map(dto);
-            await _uow.Permissions.AddAsync(entity);
-            await _uow.SaveChangesAsync();
-            return entity.Id;
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            var entity = await _uow.Permissions.Query().FirstOrDefaultAsync(p => p.Id == id);
-            if (entity == null) return;
-
-            // Check if permission is assigned to any role
-            var isAssigned = await _uow.RolePermissions.Query()
-                .AnyAsync(rp => rp.PermissionId == id);
-
-            if (isAssigned)
-            {
-                throw new InvalidOperationException("Cannot delete permission that is assigned to roles. Remove it from all roles first.");
-            }
-
-            _uow.Permissions.Remove(entity);
-            await _uow.SaveChangesAsync();
-        }
-
+      
         public async Task<bool> ExistsAsync(string code)
         {
             if (string.IsNullOrEmpty(code))
@@ -70,26 +39,5 @@ namespace ResturantBusinessLayer.Services.Implementations
 
         
         
-
-        public async Task UpdateAsync(PermissionDto dto)
-        {
-            var entity = await _uow.Permissions.Query().FirstOrDefaultAsync(p => p.Id == dto.Id);
-            if (entity == null)
-                throw new InvalidOperationException($"Permission with ID {dto.Id} not found.");
-
-            // Check if code is being changed and if new code already exists
-            if (!string.IsNullOrEmpty(dto.Code) && 
-                !string.IsNullOrEmpty(entity.Code) &&
-                !entity.Code.Equals(dto.Code, StringComparison.OrdinalIgnoreCase) &&
-                await ExistsAsync(dto.Code))
-            {
-                throw new InvalidOperationException($"Permission with code '{dto.Code}' already exists.");
-            }
-
-            entity.Code = dto.Code;
-            entity.Description = dto.Description;
-            _uow.Permissions.Update(entity);
-            await _uow.SaveChangesAsync();
-        }
     }
 }
